@@ -2,26 +2,41 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
+import { HeroAnimatedElements } from "@/components/ui/AnimatedBackground";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center gradient-hero overflow-hidden">
-      {/* Subtle background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/3 rounded-full blur-3xl" />
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-secondary/50 via-background to-background">
+      {/* Animated background elements */}
+      <HeroAnimatedElements />
+
+      {/* Mesh gradient overlay */}
+      <div 
+        className="absolute inset-0 opacity-60"
+        style={{
+          background: `
+            radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--accent) / 0.15), transparent),
+            radial-gradient(ellipse 60% 40% at 100% 50%, hsl(var(--accent) / 0.08), transparent),
+            radial-gradient(ellipse 60% 40% at 0% 50%, hsl(var(--accent) / 0.08), transparent)
+          `,
+        }}
+      />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-soft border border-accent/20 mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-8 backdrop-blur-sm"
           >
-            <Sparkles className="w-4 h-4 text-accent" />
+            <motion.div
+              animate={{ rotate: [0, 15, -15, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <Sparkles className="w-4 h-4 text-accent" />
+            </motion.div>
             <span className="text-sm font-medium text-accent">Built for Creators</span>
           </motion.div>
 
@@ -29,18 +44,33 @@ export function HeroSection() {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight mb-6"
           >
             Everything a Creator Needs.{" "}
-            <span className="text-accent">In One Place.</span>
+            <motion.span 
+              className="text-accent inline-block"
+              animate={{ 
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              }}
+              transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+              style={{
+                background: "linear-gradient(90deg, hsl(var(--accent)), hsl(250 70% 60%), hsl(var(--accent)))",
+                backgroundSize: "200% auto",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              In One Place.
+            </motion.span>
           </motion.h1>
 
           {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
           >
             From hooks to hashtags, scripts to brand deals — build, grow, and monetize your content effortlessly.
@@ -50,19 +80,28 @@ export function HeroSection() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Link to="/tools">
-              <Button variant="hero" size="xl" className="group">
-                Start Creating
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button variant="hero" size="xl" className="group shadow-lg shadow-accent/20">
+                  Start Creating
+                  <motion.span
+                    animate={{ x: [0, 4, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.span>
+                </Button>
+              </motion.div>
             </Link>
             <Link to="/tools">
-              <Button variant="hero-secondary" size="xl">
-                Explore Tools
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button variant="hero-secondary" size="xl" className="backdrop-blur-sm">
+                  Explore Tools
+                </Button>
+              </motion.div>
             </Link>
           </motion.div>
 
@@ -70,21 +109,30 @@ export function HeroSection() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
             className="flex items-center justify-center gap-8 sm:gap-12 mt-16 pt-8 border-t border-border/50"
           >
-            <div className="text-center">
-              <p className="text-2xl sm:text-3xl font-bold text-foreground">10K+</p>
-              <p className="text-sm text-muted-foreground">Creators</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl sm:text-3xl font-bold text-foreground">500K+</p>
-              <p className="text-sm text-muted-foreground">Content Generated</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl sm:text-3xl font-bold text-foreground">$2M+</p>
-              <p className="text-sm text-muted-foreground">Brand Deals</p>
-            </div>
+            {[
+              { value: "10K+", label: "Creators" },
+              { value: "500K+", label: "Content Generated" },
+              { value: "$2M+", label: "Brand Deals" },
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                className="text-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
+              >
+                <motion.p 
+                  className="text-2xl sm:text-3xl font-bold text-foreground"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  {stat.value}
+                </motion.p>
+                <p className="text-sm text-muted-foreground">{stat.label}</p>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </div>
