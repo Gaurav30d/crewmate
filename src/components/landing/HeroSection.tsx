@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { HeroAnimatedElements } from "@/components/ui/AnimatedBackground";
+import { CountUp } from "@/components/ui/CountUp";
 
 export function HeroSection() {
   return (
@@ -83,9 +84,14 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Link to="/tools">
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button variant="hero" size="xl" className="group shadow-lg shadow-accent/20">
+            <Link to="/register">
+              <motion.div 
+                whileHover={{ scale: 1.03 }} 
+                whileTap={{ scale: 0.97 }}
+                className="relative group"
+              >
+                <div className="absolute -inset-1 bg-accent/30 rounded-2xl blur-lg group-hover:blur-xl transition-all opacity-50 group-hover:opacity-75" />
+                <Button variant="hero" size="xl" className="relative shadow-lg shadow-accent/20">
                   Start Creating
                   <motion.span
                     animate={{ x: [0, 4, 0] }}
@@ -97,7 +103,7 @@ export function HeroSection() {
               </motion.div>
             </Link>
             <Link to="/tools">
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Button variant="hero-secondary" size="xl" className="backdrop-blur-sm">
                   Explore Tools
                 </Button>
@@ -113,9 +119,9 @@ export function HeroSection() {
             className="flex items-center justify-center gap-8 sm:gap-12 mt-16 pt-8 border-t border-border/50"
           >
             {[
-              { value: "10K+", label: "Creators" },
-              { value: "500K+", label: "Content Generated" },
-              { value: "$2M+", label: "Brand Deals" },
+              { value: 10000, label: "Creators", suffix: "+" },
+              { value: 500000, label: "Content Generated", suffix: "+" },
+              { value: 2000000, label: "Brand Deals", prefix: "$", suffix: "+" },
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -123,13 +129,11 @@ export function HeroSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
+                whileHover={{ scale: 1.05 }}
               >
-                <motion.p 
-                  className="text-2xl sm:text-3xl font-bold text-foreground"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  {stat.value}
-                </motion.p>
+                <p className="text-2xl sm:text-3xl font-bold text-foreground">
+                  <CountUp end={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
+                </p>
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
               </motion.div>
             ))}

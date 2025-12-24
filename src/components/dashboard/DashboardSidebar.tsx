@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
   Lightbulb,
@@ -12,6 +12,7 @@ import {
   Briefcase,
   ChevronLeft,
   ChevronRight,
+  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +27,8 @@ const sidebarItems = [
   { name: "Insights", icon: BarChart3, path: "/insights" },
   { name: "Community", icon: Users, path: "/community" },
   { name: "Brand Deals", icon: Briefcase, path: "/brand-deals" },
+  { divider: true },
+  { name: "Profile", icon: User, path: "/profile" },
 ];
 
 interface DashboardSidebarProps {
@@ -47,26 +50,32 @@ export function DashboardSidebar({ isCollapsed, onToggle }: DashboardSidebarProp
     <motion.aside
       initial={false}
       animate={{ width: isCollapsed ? 72 : 260 }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
+      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
       className="h-screen bg-sidebar border-r border-sidebar-border flex flex-col sticky top-0"
     >
       {/* Header */}
       <div className="p-4 border-b border-sidebar-border flex items-center justify-between">
-        {!isCollapsed && (
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">C</span>
-            </div>
-            <span className="font-semibold text-foreground">CreatorHub</span>
-          </Link>
-        )}
-        {isCollapsed && (
-          <Link to="/" className="mx-auto">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">C</span>
-            </div>
-          </Link>
-        )}
+        <Link to="/" className="flex items-center gap-2">
+          <motion.div
+            whileHover={{ scale: 1.05, rotate: 5 }}
+            className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center"
+          >
+            <span className="text-primary-foreground font-bold text-lg">C</span>
+          </motion.div>
+          <AnimatePresence>
+            {!isCollapsed && (
+              <motion.span
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.2 }}
+                className="font-semibold text-foreground"
+              >
+                CrewLab
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </Link>
       </div>
 
       {/* Navigation */}
@@ -84,14 +93,38 @@ export function DashboardSidebar({ isCollapsed, onToggle }: DashboardSidebarProp
               key={item.path}
               to={item.path!}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
+                "relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
                 active
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                  : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50"
+                  ? "text-accent"
+                  : "text-sidebar-foreground/70 hover:text-sidebar-foreground"
               )}
             >
-              <Icon className={cn("w-5 h-5 flex-shrink-0", active && "text-accent")} />
-              {!isCollapsed && <span>{item.name}</span>}
+              {active && (
+                <motion.div
+                  layoutId="sidebar-active"
+                  className="absolute inset-0 bg-sidebar-accent rounded-xl"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                className="relative z-10"
+              >
+                <Icon className={cn("w-5 h-5 flex-shrink-0", active && "text-accent")} />
+              </motion.div>
+              <AnimatePresence>
+                {!isCollapsed && (
+                  <motion.span
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="relative z-10"
+                  >
+                    {item.name}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </Link>
           );
         })}
@@ -99,19 +132,30 @@ export function DashboardSidebar({ isCollapsed, onToggle }: DashboardSidebarProp
 
       {/* Toggle Button */}
       <div className="p-3 border-t border-sidebar-border">
-        <button
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={onToggle}
           className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
         >
-          {isCollapsed ? (
-            <ChevronRight className="w-5 h-5" />
-          ) : (
-            <>
-              <ChevronLeft className="w-5 h-5" />
-              <span>Collapse</span>
-            </>
-          )}
-        </button>
+          <motion.div
+            animate={{ rotate: isCollapsed ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </motion.div>
+          <AnimatePresence>
+            {!isCollapsed && (
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                Collapse
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.button>
       </div>
     </motion.aside>
   );
