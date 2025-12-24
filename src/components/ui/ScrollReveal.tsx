@@ -87,17 +87,23 @@ export function StaggerContainer({
 export function StaggerItem({
   children,
   className = "",
+  pop = false,
 }: {
   children: ReactNode;
   className?: string;
+  pop?: boolean;
 }) {
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 },
+        hidden: { opacity: 0, y: 30, scale: pop ? 0.8 : 1 },
+        visible: { opacity: 1, y: 0, scale: 1 },
       }}
-      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ 
+        duration: 0.5, 
+        ease: [0.25, 0.1, 0.25, 1],
+        scale: pop ? { type: "spring", stiffness: 300, damping: 20 } : undefined
+      }}
       className={className}
     >
       {children}
