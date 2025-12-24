@@ -88,9 +88,9 @@ export function FeaturesSection() {
         </ScrollReveal>
 
         {/* Features Grid */}
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StaggerContainer staggerDelay={0.08} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature) => (
-            <StaggerItem key={feature.title}>
+            <StaggerItem key={feature.title} pop>
               <Link
                 to={feature.link}
                 className="group block h-full"
