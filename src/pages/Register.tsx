@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Loader2, Check } from "lucide-react";
 import { AnimatedBackground } from "@/components/ui/AnimatedBackground";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,14 +19,64 @@ const Register = () => {
   const [error, setError] = useState("");
   const [role, setRole] = useState<"creator" | "brand">("creator");
 
+  // Check if user is already logged in
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        navigate("/tools");
+      }
+    };
+    checkUser();
+  }, [navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-    
-    // Simulate registration
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsLoading(false);
+
+    // Validate password
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const redirectUrl = `${window.location.origin}/`;
+      
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            full_name: name,
+            role: role,
+          },
+        },
+      });
+
+      if (signUpError) {
+        if (signUpError.message.includes("already registered")) {
+          setError("This email is already registered. Please sign in instead.");
+        } else {
+          setError(signUpError.message);
+        }
+        setIsLoading(false);
+        return;
+      }
+
+      if (data.user) {
+        toast.success("Account created successfully!");
+        navigate("/tools");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+      console.error("Registration error:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const passwordRequirements = [
