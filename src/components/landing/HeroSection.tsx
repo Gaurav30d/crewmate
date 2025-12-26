@@ -1,20 +1,41 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { HeroAnimatedElements } from "@/components/ui/AnimatedBackground";
 import { CountUp } from "@/components/ui/CountUp";
+import { ParallaxBackground } from "@/components/ui/ParallaxSection";
+import { useRef } from "react";
 
 export function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 50]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.5]);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-secondary/50 via-background to-background">
+    <section 
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-secondary/50 via-background to-background"
+    >
+      {/* Parallax Background */}
+      <ParallaxBackground />
+      
       {/* Animated background elements */}
-      <HeroAnimatedElements />
+      <motion.div style={{ y: backgroundY }} className="absolute inset-0">
+        <HeroAnimatedElements />
+      </motion.div>
 
       {/* Mesh gradient overlay */}
-      <div 
+      <motion.div 
         className="absolute inset-0 opacity-60"
         style={{
+          y: backgroundY,
           background: `
             radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--accent) / 0.15), transparent),
             radial-gradient(ellipse 60% 40% at 100% 50%, hsl(var(--accent) / 0.08), transparent),
@@ -23,7 +44,10 @@ export function HeroSection() {
         }}
       />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <motion.div 
+        style={{ y: contentY, opacity }}
+        className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+      >
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <motion.div
@@ -139,7 +163,7 @@ export function HeroSection() {
             ))}
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

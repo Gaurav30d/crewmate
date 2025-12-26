@@ -11,7 +11,6 @@ import {
   Users,
   Briefcase,
   ChevronLeft,
-  ChevronRight,
   User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -92,39 +91,87 @@ export function DashboardSidebar({ isCollapsed, onToggle }: DashboardSidebarProp
             <Link
               key={item.path}
               to={item.path!}
-              className={cn(
-                "relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
-                active
-                  ? "text-accent"
-                  : "text-sidebar-foreground/70 hover:text-sidebar-foreground"
-              )}
+              className="relative block"
             >
-              {active && (
-                <motion.div
-                  layoutId="sidebar-active"
-                  className="absolute inset-0 bg-sidebar-accent rounded-xl"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                />
-              )}
               <motion.div
-                whileHover={{ scale: 1.1 }}
-                className="relative z-10"
-              >
-                <Icon className={cn("w-5 h-5 flex-shrink-0", active && "text-accent")} />
-              </motion.div>
-              <AnimatePresence>
-                {!isCollapsed && (
-                  <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="relative z-10"
-                  >
-                    {item.name}
-                  </motion.span>
+                className={cn(
+                  "relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors duration-200",
+                  active
+                    ? "text-accent"
+                    : "text-sidebar-foreground/70 hover:text-sidebar-foreground"
                 )}
-              </AnimatePresence>
+                whileHover={{ x: 4 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              >
+                {/* Active background with animation */}
+                {active && (
+                  <motion.div
+                    layoutId="sidebar-active-bg"
+                    className="absolute inset-0 bg-sidebar-accent rounded-xl"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                
+                {/* Active indicator bar */}
+                <AnimatePresence>
+                  {active && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 20, opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      className="absolute left-0 w-1 bg-accent rounded-r-full"
+                    />
+                  )}
+                </AnimatePresence>
+                
+                {/* Icon with hover effect */}
+                <motion.div
+                  className="relative z-10"
+                  whileHover={{ scale: 1.15, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <Icon className={cn(
+                    "w-5 h-5 flex-shrink-0 transition-colors duration-200",
+                    active ? "text-accent" : ""
+                  )} />
+                  
+                  {/* Icon glow on active */}
+                  {active && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="absolute inset-0 bg-accent/20 rounded-full blur-md -z-10"
+                    />
+                  )}
+                </motion.div>
+                
+                {/* Label */}
+                <AnimatePresence>
+                  {!isCollapsed && (
+                    <motion.span
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="relative z-10"
+                    >
+                      {item.name}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+              
+              {/* Tooltip for collapsed state */}
+              {isCollapsed && (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  whileHover={{ opacity: 1, x: 0 }}
+                  className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-2 py-1 bg-popover text-popover-foreground text-xs rounded-md shadow-md whitespace-nowrap z-50 pointer-events-none"
+                >
+                  {item.name}
+                </motion.div>
+              )}
             </Link>
           );
         })}
@@ -133,10 +180,10 @@ export function DashboardSidebar({ isCollapsed, onToggle }: DashboardSidebarProp
       {/* Toggle Button */}
       <div className="p-3 border-t border-sidebar-border">
         <motion.button
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ scale: 1.02, backgroundColor: "hsl(var(--sidebar-accent) / 0.8)" }}
           whileTap={{ scale: 0.98 }}
           onClick={onToggle}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-sm text-sidebar-foreground/70 hover:text-sidebar-foreground transition-colors"
         >
           <motion.div
             animate={{ rotate: isCollapsed ? 180 : 0 }}
