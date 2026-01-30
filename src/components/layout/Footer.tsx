@@ -36,7 +36,7 @@ export function Footer() {
                 <span className="text-primary-foreground font-bold text-lg">C</span>
               </motion.div>
               <span className="font-semibold text-lg text-foreground group-hover:text-accent transition-colors">
-                CrewLab
+                CrewMate
               </span>
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -99,7 +99,7 @@ export function Footer() {
         <ScrollReveal>
           <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
-              © 2024 CrewLab. All rights reserved.
+              © 2024 CrewMate. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               {["Twitter", "Instagram", "YouTube"].map((social) => (

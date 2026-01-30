@@ -33,7 +33,7 @@ export function CTASection() {
             Ready to level up your content?
           </h2>
           <p className="text-lg text-primary-foreground/80 mb-8">
-            Join thousands of creators already using CrewLab to grow their audience and income.
+            Join thousands of creators already using CrewMate to grow their audience and income.
           </p>
           <Link to="/register">
             <motion.div
