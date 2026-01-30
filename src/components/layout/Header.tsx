@@ -50,7 +50,7 @@ export function Header() {
               <span className="text-primary-foreground font-bold text-lg">C</span>
             </motion.div>
             <span className="font-semibold text-lg text-foreground group-hover:text-accent transition-colors">
-              CrewLab
+              CrewMate
             </span>
           </Link>
 

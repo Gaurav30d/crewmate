@@ -70,7 +70,7 @@ export function DashboardSidebar({ isCollapsed, onToggle }: DashboardSidebarProp
                 transition={{ duration: 0.2 }}
                 className="font-semibold text-foreground"
               >
-                CrewLab
+                CrewMate
               </motion.span>
             )}
           </AnimatePresence>

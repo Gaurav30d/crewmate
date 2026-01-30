@@ -84,7 +84,7 @@ const Login = () => {
             <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-xl">C</span>
             </div>
-            <span className="font-semibold text-xl text-foreground">CrewLab</span>
+            <span className="font-semibold text-xl text-foreground">CrewMate</span>
           </Link>
         </motion.div>
 

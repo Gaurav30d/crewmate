@@ -13,7 +13,7 @@ const Profile = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("Alex Creator");
-  const [email, setEmail] = useState("alex@crewlab.com");
+  const [email, setEmail] = useState("alex@crewmate.com");
   const [role] = useState<"creator" | "brand">("creator");
 
   const handleSave = async () => {
