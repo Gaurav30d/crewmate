@@ -3,8 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { Logo } from "@/components/ui/Logo";
 import { Menu, X, User } from "lucide-react";
-
 const navItems = [
   { name: "Tools", path: "/tools" },
   { name: "Community", path: "/community" },
@@ -45,9 +45,8 @@ export function Header() {
             <motion.div
               whileHover={{ scale: 1.05, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
-              className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center"
             >
-              <span className="text-primary-foreground font-bold text-lg">C</span>
+              <Logo size="md" />
             </motion.div>
             <span className="font-semibold text-lg text-foreground group-hover:text-accent transition-colors">
               CrewMate
