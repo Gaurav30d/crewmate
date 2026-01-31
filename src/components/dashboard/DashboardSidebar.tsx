@@ -14,6 +14,7 @@ import {
   User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Logo } from "@/components/ui/Logo";
 
 const sidebarItems = [
   { name: "Dashboard", icon: LayoutDashboard, path: "/tools" },
@@ -57,9 +58,8 @@ export function DashboardSidebar({ isCollapsed, onToggle }: DashboardSidebarProp
         <Link to="/" className="flex items-center gap-2">
           <motion.div
             whileHover={{ scale: 1.05, rotate: 5 }}
-            className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center"
           >
-            <span className="text-primary-foreground font-bold text-lg">C</span>
+            <Logo size="md" />
           </motion.div>
           <AnimatePresence>
             {!isCollapsed && (

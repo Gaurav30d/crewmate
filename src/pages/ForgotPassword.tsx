@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Logo } from "@/components/ui/Logo";
 import { Mail, ArrowRight, ArrowLeft, Loader2, CheckCircle } from "lucide-react";
 import { AnimatedBackground } from "@/components/ui/AnimatedBackground";
 
@@ -40,9 +41,7 @@ const ForgotPassword = () => {
           className="text-center mb-8"
         >
           <Link to="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xl">C</span>
-            </div>
+            <Logo size="lg" />
             <span className="font-semibold text-xl text-foreground">CrewMate</span>
           </Link>
         </motion.div>
